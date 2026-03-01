@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AIH MASTER - DASHBOARD CLOUD</title>
+    <style>
+        body { background: #0a0a0a; color: white; font-family: 'Segoe UI', sans-serif; text-align: center; padding-top: 50px; }
+        .status-card { display: inline-block; width: 80%; padding: 100px; border-radius: 40px; font-size: 5em; font-weight: bold; border: 10px solid #222; transition: 0.3s; }
+        .verde { background: #1b5e20; border-color: #4caf50; color: #4caf50; box-shadow: 0 0 50px #1b5e20; }
+        .rojo { background: #b71c1c; border-color: #f44336; color: #f44336; box-shadow: 0 0 50px #b71c1c; }
+    </style>
+</head>
+<body>
+    <h1>MONITOREO HSE - ESTADO SENSOR</h1>
+    <div id="panel" class="status-card">CONECTANDO...</div>
+    <p style="margin-top: 20px; color: #555;">ID NODO: AIH-MASTER-MINER-01</p>
+    
+    <script>
+        function actualizar() {
+            fetch('https://dweet.io/get/latest/dweet/for/aih-master-miner-01')
+            .then(res => res.json())
+            .then(data => {
+                const status = data.with[0].content.status;
+                const p = document.getElementById('panel');
+                p.innerText = status;
+                p.className = (status === "CERRADO") ? "status-card verde" : "status-card rojo";
+            })
+            .catch(err => console.log("Esperando datos..."));
+        }
+        setInterval(actualizar, 1000);
+    </script>
+</body>
+</html>
